@@ -28,7 +28,9 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         'sex',
         'user_img',
         'location',
-        'formatted_address'
+        'formatted_address',
+        'upload_successful',
+        'disk'
     ];
 
     protected $spatialFields = [

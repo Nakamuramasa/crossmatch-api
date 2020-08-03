@@ -24,6 +24,8 @@ class CreateUsersTable extends Migration
             $table->string('user_img')->default('');
             $table->point('location')->nullable();
             $table->string('formatted_address')->nullable();
+            $table->boolean('upload_successful')->default(false);
+            $table->string('disk')->default('public');
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

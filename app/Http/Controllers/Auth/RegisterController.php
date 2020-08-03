@@ -58,14 +58,20 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $image = $data['user_img'];
+        $image_path = $image->getPathName();
+        $filename = time()."_".preg_replace('/\$+/', '_', strtolower($image->getClientOriginalName()));
+        $tmp = $image->storeAs('uploads/original', $filename, 'tmp');
+
         return User::create([
             'username' => $data['username'],
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'about' => $data['about'] ?? "",
             'sex' => $data['sex'],
-            'user_img' => $data['user_img'] ?? "",
-            'about' => $data['about'] ?? ""
+            'user_img' => $filename ?? "",
+            'disk' => config('site.upload_disk'),
+            'password' => Hash::make($data['password']),
         ]);
     }
 }
