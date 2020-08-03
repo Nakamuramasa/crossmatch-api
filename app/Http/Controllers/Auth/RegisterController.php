@@ -14,17 +14,6 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
     use RegistersUsers;
 
     protected function registered(Request $request, User $user)
@@ -47,7 +36,7 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'sex' => ['required'],
-            'user_img' => ['file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:6000'],
+            'user_img' => ['required', 'file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:6000'],
             'about' => ['string', 'max:255'],
         ]);
     }
@@ -71,7 +60,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'about' => $data['about'] ?? "",
             'sex' => $data['sex'],
-            'user_img' => $filename ?? "",
+            'user_img' => $filename,
             'disk' => config('site.upload_disk'),
             'password' => Hash::make($data['password']),
         ]);

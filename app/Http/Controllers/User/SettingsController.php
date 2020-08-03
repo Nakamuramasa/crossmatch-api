@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Jobs\UploadImage;
 use Illuminate\Http\Request;
 use App\Rules\MatchOldPassword;
 use App\Rules\CheckSamePassword;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
-
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 
 class SettingsController extends Controller
@@ -15,9 +15,10 @@ class SettingsController extends Controller
     public function updateProfile(Request $request)
     {
         $user = auth()->user();
+
         $this->validate($request, [
             'name' => ['required', 'string', 'max:255'],
-            'user_img' => ['required'],
+            'user_img' => ['required', 'file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:6000'],
             'sex' => ['required'],
             'about' => ['required', 'string', 'max:255'],
             'formatted_address' => ['required'],
@@ -25,16 +26,23 @@ class SettingsController extends Controller
             'location.longitude' => ['required', 'numeric', 'min:-180', 'max:180']
         ]);
 
+        $image = $request->user_img;
+        $image_path = $image->getPathName();
+        $filename = time()."_".preg_replace('/\$+/', '_', strtolower($image->getClientOriginalName()));
+        $tmp = $image->storeAs('uploads/original', $filename, 'tmp');
+
         $location = new Point($request->location['latitude'], $request->location['longitude']);
 
         $user->update([
             'name' => $request->name,
-            'user_img' => $request->user_img,
+            'user_img' => $filename,
             'sex' => $request->sex,
             'about' => $request->about,
             'location' => $location,
             'formatted_address' => $request->formatted_address,
         ]);
+
+        $this->dispatch(new UploadImage($user));
 
         return new UserResource($user);
     }
