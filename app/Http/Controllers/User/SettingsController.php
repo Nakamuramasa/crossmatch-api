@@ -43,7 +43,6 @@ class SettingsController extends Controller
         ]);
 
         $this->dispatch(new UploadImage($user));
-
         return new UserResource($user);
     }
 
