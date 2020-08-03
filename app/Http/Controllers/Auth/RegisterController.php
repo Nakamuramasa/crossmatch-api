@@ -37,7 +37,6 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'sex' => ['required'],
             'user_img' => ['required', 'file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:6000'],
-            'about' => ['string', 'max:255'],
         ]);
     }
 
@@ -58,11 +57,10 @@ class RegisterController extends Controller
             'username' => $data['username'],
             'name' => $data['name'],
             'email' => $data['email'],
-            'about' => $data['about'] ?? "",
+            'password' => Hash::make($data['password']),
             'sex' => $data['sex'],
             'user_img' => $filename,
             'disk' => config('site.upload_disk'),
-            'password' => Hash::make($data['password']),
         ]);
     }
 }
