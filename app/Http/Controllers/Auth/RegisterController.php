@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Jobs\UploadImage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -28,6 +29,7 @@ class RegisterController extends Controller
 
     protected function registered(Request $request, User $user)
     {
+        $this->dispatch(new UploadImage($user));
         return response()->json($user, 200);
     }
 
