@@ -14,8 +14,6 @@ class SettingsController extends Controller
 {
     public function updateProfile(Request $request)
     {
-        $user = auth()->user();
-
         $this->validate($request, [
             'name' => ['required', 'string', 'max:255'],
             'user_img' => ['required', 'file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:6000'],
@@ -33,6 +31,8 @@ class SettingsController extends Controller
 
         $location = new Point($request->location['latitude'], $request->location['longitude']);
 
+        $user = auth()->user();
+
         $user->update([
             'name' => $request->name,
             'user_img' => $filename,
@@ -43,6 +43,7 @@ class SettingsController extends Controller
         ]);
 
         $this->dispatch(new UploadImage($user));
+
         return new UserResource($user);
     }
 

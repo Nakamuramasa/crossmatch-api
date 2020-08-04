@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Notifications\VerifyEmail;
 use App\Notifications\ResetPassword;
+use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -63,6 +64,20 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPassword($token));
+    }
+
+    public function getImagesAttribute()
+    {
+        return [
+            'thumbnail' => $this->getImagePath('thumbnail'),
+            'large' => $this->getImagePath('large'),
+            'original' => $this->getImagePath('original')
+        ];
+    }
+
+    protected function getImagePath($size)
+    {
+        return Storage::disk($this->disk)->url("uploads/images/{$size}/" . $this->user_img);
     }
 
     /**

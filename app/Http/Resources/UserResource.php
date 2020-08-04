@@ -16,10 +16,10 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user_img' => $this->user_img,
+            'user_img' => $this->images,
             'username' => $this->username,
-            'email' => $this->email,
             'name' => $this->name,
+            'email' => $this->email,
             'about' => $this->about,
             'sex'=> $this->sex,
             'location' => $this->location,
@@ -27,6 +27,10 @@ class UserResource extends JsonResource
             'create_dates' => [
                 'created_at_human' => $this->created_at->diffForHumans(),
                 'created_at' => $this->created_at
+            ],
+            'update_dates' => [
+                'updated_at_human' => $this->updated_at->diffForHumans(),
+                'updated_at' => $this->updated_at
             ]
         ];
     }

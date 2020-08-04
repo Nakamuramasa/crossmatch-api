@@ -2,6 +2,8 @@
 
 Route::get('me', 'User\MeController@getMe');
 
+Route::get('users', 'User\UserController@index');
+
 Route::group(['middleware' => ['auth:api']], function(){
     Route::post('logout', 'Auth\LoginController@logout');
     Route::post('settings/profile', 'User\SettingsController@updateProfile');
