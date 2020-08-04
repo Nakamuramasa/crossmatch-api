@@ -8,10 +8,18 @@ use App\Rules\MatchOldPassword;
 use App\Rules\CheckSamePassword;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Repositories\Contracts\IUser;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 
 class SettingsController extends Controller
 {
+    protected $users;
+
+    public function __construct(IUser $users)
+    {
+        $this->users = $users;
+    }
+
     public function updateProfile(Request $request)
     {
         $this->validate($request, [
@@ -31,15 +39,15 @@ class SettingsController extends Controller
 
         $location = new Point($request->location['latitude'], $request->location['longitude']);
 
-        $user = auth()->user();
-
-        $user->update([
+        $user = $this->users->update(auth()->id(), [
             'name' => $request->name,
             'user_img' => $filename,
             'sex' => $request->sex,
             'about' => $request->about,
             'location' => $location,
             'formatted_address' => $request->formatted_address,
+            'upload_successful' => false,
+            'disk' => config('site.upload_disk')
         ]);
 
         $this->dispatch(new UploadImage($user));
@@ -54,7 +62,7 @@ class SettingsController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed', new CheckSamePassword]
         ]);
 
-        $request->user()->update([
+        $this->users->update(auth()->id(), [
             'password' => bcrypt($request->password)
         ]);
 

@@ -7,6 +7,7 @@ use App\Jobs\UploadImage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Repositories\Contracts\IUser;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -14,6 +15,13 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
+    protected $users;
+
+    public function __construct(IUser $users)
+    {
+        $this->users = $users;
+    }
+
     use RegistersUsers;
 
     protected function registered(Request $request, User $user)
@@ -53,7 +61,7 @@ class RegisterController extends Controller
         $filename = time()."_".preg_replace('/\$+/', '_', strtolower($image->getClientOriginalName()));
         $tmp = $image->storeAs('uploads/original', $filename, 'tmp');
 
-        return User::create([
+        return $this->users->create([
             'username' => $data['username'],
             'name' => $data['name'],
             'email' => $data['email'],

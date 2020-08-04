@@ -3,7 +3,7 @@
 Route::get('me', 'User\MeController@getMe');
 
 Route::get('users', 'User\UserController@index');
-Route::get('user/{id}', 'User\UserController@findById');
+Route::get('user/{id}', 'User\UserController@findUser');
 Route::get('user/{username}', 'User\UserController@findByUsername');
 
 Route::group(['middleware' => ['auth:api']], function(){

@@ -23,9 +23,9 @@ class UserController extends Controller
         return UserResource::collection($users);
     }
 
-    public function findById($id)
+    public function findUser($id)
     {
-        $user = $this->users->findOrFail($id);
+        $user = $this->users->find($id);
         return new UserResource($user);
     }
 
