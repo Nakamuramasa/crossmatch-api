@@ -14,4 +14,16 @@ class UserController extends Controller
         $users = User::all();
         return UserResource::collection($users);
     }
+
+    public function findById($id)
+    {
+        $user = User::where('id', $id)->firstOrFail();
+        return new UserResource($user);
+    }
+
+    public function findByUsername($username)
+    {
+        $user = User::where('username', $username)->get();
+        return new UserResource($user);
+    }
 }
