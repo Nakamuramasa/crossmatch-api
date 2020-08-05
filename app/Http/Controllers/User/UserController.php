@@ -26,7 +26,7 @@ class UserController extends Controller
     {
         $users = $this->users->withCriteria([
             new LatestFirst(),
-            new WithoutMe(),
+            // new WithoutMe(),
             // new ForUser()
         ])->all();
         return UserResource::collection($users);
