@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Repositories\Contracts\IUser;
+use App\Repositories\Eloquent\Criteria\{
+    LatestFirst,
+    WithoutMe
+};
 
 class UserController extends Controller
 {
@@ -19,7 +23,10 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = $this->users->all();
+        $users = $this->users->withCriteria([
+            new LatestFirst(),
+            new WithoutMe()
+        ])->all();
         return UserResource::collection($users);
     }
 
