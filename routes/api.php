@@ -8,6 +8,8 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::get('users', 'User\UserController@index');
     Route::get('user/{id}', 'User\UserController@findUser');
     Route::get('user/{username}', 'User\UserController@findByUsername');
+
+    Route::post('/like', 'Reaction\ReactionController@store');
 });
 
 Route::group(['middleware' => ['guest:api']], function(){

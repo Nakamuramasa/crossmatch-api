@@ -4,10 +4,12 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Contracts\{
-    IUser
+    IUser,
+    IReaction
 };
 use App\Repositories\Eloquent\{
-    UserRepository
+    UserRepository,
+    ReactionRepository
 };
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -30,5 +32,6 @@ class RepositoryServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app->bind(IUser::class, UserRepository::class);
+        $this->app->bind(IReaction::class, ReactionRepository::class);
     }
 }

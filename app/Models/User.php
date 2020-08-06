@@ -80,6 +80,16 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         return Storage::disk($this->disk)->url("uploads/images/{$size}/" . $this->user_img);
     }
 
+    public function toUserId()
+    {
+        return $this->hasMany(Reaction::class, 'to_user_id', 'id');
+    }
+
+    public function fromUserId()
+    {
+        return $this->hasMany(Reaction::class, 'from_user_id', 'id');
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
