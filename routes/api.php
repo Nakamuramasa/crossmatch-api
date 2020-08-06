@@ -10,6 +10,7 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::get('user/{username}', 'User\UserController@findByUsername');
 
     Route::post('/like', 'Reaction\ReactionController@store');
+    Route::put('/like/{id}', 'Reaction\ReactionController@update');
 });
 
 Route::group(['middleware' => ['guest:api']], function(){

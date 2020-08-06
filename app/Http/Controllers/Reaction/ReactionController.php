@@ -31,4 +31,23 @@ class ReactionController extends Controller
 
         return new ReactionResource($reaction);
     }
+
+    public function update(Request $request, $id)
+    {
+        $reaction = $this->reactions->find($id);
+        $this->authorize('update', $reaction);
+
+        $this->validate($request, [
+            'to_user_id' => ['required'],
+            'status' => ['required']
+        ]);
+
+        $reaction = $this->reactions->update($id, [
+            'to_user_id' => $request->to_user_id,
+            'from_user_id' => auth()->id(),
+            'status' => $request->status
+        ]);
+
+        return new ReactionResource($reaction);
+    }
 }
