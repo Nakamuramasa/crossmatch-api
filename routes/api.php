@@ -11,6 +11,7 @@ Route::group(['middleware' => ['auth:api']], function(){
 
     Route::post('/like', 'Reaction\ReactionController@store');
     Route::put('/like/{id}', 'Reaction\ReactionController@update');
+    Route::delete('/like/{id}', 'Reaction\ReactionController@destroy');
 });
 
 Route::group(['middleware' => ['guest:api']], function(){

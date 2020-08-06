@@ -65,7 +65,7 @@ class ReactionPolicy
      */
     public function delete(User $user, Reaction $reaction)
     {
-        //
+        return $reaction->from_user_id === $user->id;
     }
 
     /**

@@ -50,4 +50,13 @@ class ReactionController extends Controller
 
         return new ReactionResource($reaction);
     }
+
+    public function destroy($id)
+    {
+        $reaction = $this->reactions->find($id);
+        $this->authorize('delete', $reaction);
+        $reaction->delete();
+
+        return response()->json(['message' => 'Deleted'], 200);
+    }
 }
