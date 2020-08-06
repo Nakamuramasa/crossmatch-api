@@ -9,9 +9,10 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::get('user/{id}', 'User\UserController@findUser');
     Route::get('user/{username}', 'User\UserController@findByUsername');
 
-    Route::post('/like', 'Reaction\ReactionController@store');
-    Route::put('/like/{id}', 'Reaction\ReactionController@update');
-    Route::delete('/like/{id}', 'Reaction\ReactionController@destroy');
+    Route::get('like', 'Reaction\ReactionCOntroller@index');
+    Route::post('like', 'Reaction\ReactionController@store');
+    Route::put('like/{id}', 'Reaction\ReactionController@update');
+    Route::delete('like/{id}', 'Reaction\ReactionController@destroy');
 });
 
 Route::group(['middleware' => ['guest:api']], function(){

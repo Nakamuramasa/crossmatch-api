@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ReactionResource;
 use App\Repositories\Contracts\IReaction;
+use App\Repositories\Eloquent\Criteria\{
+    LatestFirst,
+    EagerLoad
+};
 
 class ReactionController extends Controller
 {
@@ -14,6 +18,14 @@ class ReactionController extends Controller
     public function __construct(IReaction $reactions)
     {
         $this->reactions = $reactions;
+    }
+
+    public function index()
+    {
+        $reactions = $this->reactions->withCriteria([
+            new LatestFirst(),
+        ])->all();
+        return ReactionResource::collection($reactions);
     }
 
     public function store(Request $request)
