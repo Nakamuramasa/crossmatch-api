@@ -19,6 +19,9 @@ class CreateReactionsTable extends Migration
             $table->bigInteger('from_user_id')->unsigned();
             $table->integer('status');
             $table->timestamps();
+
+            $table->foreign('to_user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('from_user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
