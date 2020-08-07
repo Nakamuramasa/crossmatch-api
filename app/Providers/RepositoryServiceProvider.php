@@ -5,11 +5,15 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Contracts\{
     IUser,
-    IReaction
+    IReaction,
+    IChat,
+    IMessage
 };
 use App\Repositories\Eloquent\{
     UserRepository,
-    ReactionRepository
+    ReactionRepository,
+    ChatRepository,
+    MessageRepository
 };
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -33,5 +37,7 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->bind(IUser::class, UserRepository::class);
         $this->app->bind(IReaction::class, ReactionRepository::class);
+        $this->app->bind(IChat::class, ChatRepository::class);
+        $this->app->bind(IMessage::class, MessageRepository::class);
     }
 }
