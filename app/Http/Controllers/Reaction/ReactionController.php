@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Reaction;
 
+use App\Models\Reaction;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ReactionResource;
@@ -35,13 +36,19 @@ class ReactionController extends Controller
             'status' => ['required']
         ]);
 
-        $reaction = $this->reactions->create([
+        $checkReaction = $this->reactions->alredyReaction([
             'to_user_id' => $request->to_user_id,
-            'from_user_id' => auth()->id(),
-            'status' => $request->status
+            'from_user_id' => auth()->id()
         ]);
 
-        return new ReactionResource($reaction);
+        if($checkReaction->isEmpty()){
+            $reaction = $this->reactions->create([
+                'to_user_id' => $request->to_user_id,
+                'from_user_id' => auth()->id(),
+                'status' => $request->status
+            ]);
+            return new ReactionResource($reaction);
+        }
     }
 
     public function update(Request $request, $id)
@@ -70,5 +77,11 @@ class ReactionController extends Controller
         $reaction->delete();
 
         return response()->json(['message' => 'Deleted'], 200);
+    }
+
+    public function findById($id)
+    {
+        $reaction = $this->reactions->find($id);
+        return new ReactionResource($reaction);
     }
 }

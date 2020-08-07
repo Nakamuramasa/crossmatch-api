@@ -15,6 +15,6 @@ class EagerLoad implements ICriterion
 
     public function apply($model)
     {
-        return $model->with($this->relationshios);
+        return $model->with($this->relationships);
     }
 }

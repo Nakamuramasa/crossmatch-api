@@ -12,4 +12,9 @@ class ReactionRepository extends BaseRepository implements IReaction
     {
         return Reaction::class;
     }
+
+    public function alredyReaction(array $data)
+    {
+        return $this->model->where($data)->get();
+    }
 }

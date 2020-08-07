@@ -10,7 +10,7 @@ use App\Repositories\Contracts\IUser;
 use App\Repositories\Eloquent\Criteria\{
     LatestFirst,
     WithoutMe,
-    ForUser
+    EagerLoad
 };
 
 class UserController extends Controller
@@ -26,8 +26,8 @@ class UserController extends Controller
     {
         $users = $this->users->withCriteria([
             new LatestFirst(),
-            new WithoutMe(),
-            // new ForUser()
+            // new WithoutMe(),
+            new EagerLoad(['fromUserId'])
         ])->all();
         return UserResource::collection($users);
     }

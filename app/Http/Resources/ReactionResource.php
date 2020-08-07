@@ -18,7 +18,9 @@ class ReactionResource extends JsonResource
             'id' => $this->id,
             'to_user_id' => $this->to_user_id,
             'from_user_id' => $this->from_user_id,
-            'status' => $this->status,
+            'to_user_detail' => new UserResource($this->toUserId),
+            'from_user_detail' => new UserResource($this->fromUserId),
+            'status' => $this->status
         ];
     }
 }
