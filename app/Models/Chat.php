@@ -19,7 +19,7 @@ class Chat extends Model
 
     public function getLatestMessageAttribute()
     {
-        return $this->messages->latest()->first();
+        return $this->messages()->latest()->first();
     }
 
     public function isUnreadForUser($userId)
