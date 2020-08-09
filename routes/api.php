@@ -20,6 +20,11 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::get('chats/{id}/messages', 'Chats\ChatController@getChatMessages');
     Route::put('chats/{id}/markAsRead', 'Chats\ChatController@markAsRead');
     Route::delete('messages/{id}', 'Chats\ChatController@destroyMessage');
+
+    Route::post('invitations/{chatId}', 'Chats\InvitationsController@invite');
+    Route::post('invitations/{id}/resend', 'Chats\InvitationsController@resend');
+    Route::post('invitations/{id}/respond', 'Chats\InvitationsController@respond');
+    Route::delete('invitations/{id}', 'Chats\InvitationsController@destroy');
 });
 
 Route::group(['middleware' => ['guest:api']], function(){

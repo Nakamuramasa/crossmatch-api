@@ -7,6 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Chat extends Model
 {
+    public function invitation()
+    {
+        return $this->hasMany(Invitation::class);
+    }
+
+    public function hasPendingInvite($email)
+    {
+        return (bool)$this->invitations()->where('recipient_email', $email)->count();
+    }
+
     public function participants()
     {
         return $this->belongsToMany(User::class, 'participants');
