@@ -40,7 +40,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(IUser::class, UserRepository::class);
         $this->app->bind(IReaction::class, ReactionRepository::class);
         $this->app->bind(IChat::class, ChatRepository::class);
-        $this->app->bind(IInvitation::class, InvitationRepository);
+        $this->app->bind(IInvitation::class, InvitationRepository::class);
         $this->app->bind(IMessage::class, MessageRepository::class);
     }
 }
