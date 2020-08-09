@@ -45,6 +45,11 @@ abstract class BaseRepository implements IBase, ICriteria
         return $this->model->where($column, $value)->firstOrFail();
     }
 
+    public function getPluck($column)
+    {
+        return $this->model->pluck($column)->get();
+    }
+
     public function paginate($perPage = 10)
     {
         return $this->model->paginate($perPage);

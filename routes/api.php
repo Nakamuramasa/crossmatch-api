@@ -18,8 +18,8 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::get('like/{id}', 'Reaction\ReactionController@findById');
 
     Route::post('chats', 'Chats\ChatController@sendMessage');
+    Route::post('chats/show', 'Chats\ChatController@showChatRoom');
     Route::get('chats', 'Chats\ChatController@getUserChats');
-    Route::get('chats/{id}/messages', 'Chats\ChatController@getChatMessages');
     Route::put('chats/{id}/markAsRead', 'Chats\ChatController@markAsRead');
     Route::delete('messages/{id}', 'Chats\ChatController@destroyMessage');
 

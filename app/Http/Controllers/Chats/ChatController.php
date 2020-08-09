@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Chats;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ChatResource;
-use App\Repositories\Contracts\IChat;
 use App\Http\Resources\MessageResource;
-use App\Repositories\Contracts\IMessage;
 use App\Repositories\Eloquent\Criteria\WithTrashed;
+use App\Repositories\Contracts\{
+    IChat,
+    IMessage
+};
 
 class ChatController extends Controller
 {
@@ -21,17 +23,14 @@ class ChatController extends Controller
         $this->messages = $messages;
     }
 
-    public function sendMessage(Request $request)
+    public function showChatRoom(Request $request)
     {
         $this->validate($request, [
-            'recipient' => ['required'],
-            'body' => ['required']
+            'recipient' => ['required']
         ]);
 
         $recipient = $request->recipient;
         $user = auth()->user();
-        $body = $request->body;
-
         $chat = $user->getChatWithUser($recipient);
 
         if(! $chat){
@@ -39,10 +38,26 @@ class ChatController extends Controller
             $this->chats->createParticipants($chat->id, [$user->id, $recipient]);
         }
 
+        $messages = $this->messages->withCriteria([
+            new WithTrashed()
+        ])->findWhere('chat_id', $chat->id);
+        return MessageResource::collection($messages);
+    }
+
+    public function sendMessage(Request $request)
+    {
+        $this->validate($request, [
+            'recipient' => ['required'],
+            'body' => ['required']
+        ]);
+
+        $user = auth()->user();
+        $chat = $user->getChatWithUser($request->recipient);
+
         $message = $this->messages->create([
-            'user_id' => $user->id,
+            'user_id' => auth()->id(),
             'chat_id' => $chat->id,
-            'body' => $body,
+            'body' => $request->body,
             'last_read' => null
         ]);
 
@@ -53,14 +68,6 @@ class ChatController extends Controller
     {
         $chats = $this->chats->getUserChats();
         return ChatResource::collection($chats);
-    }
-
-    public function getChatMessages($id)
-    {
-        $messages = $this->messages->withCriteria([
-            new WithTrashed()
-        ])->findWhere('chat_id', $id);
-        return MessageResource::collection($messages);
     }
 
     public function markAsRead($id)

@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers\Match;
 
-use App\Models\User;
-use App\Models\Reaction;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
-use App\Repositories\Eloquent\Criteria\LatestFirst;
 use App\Repositories\Contracts\{
     IUser,
     IReaction
