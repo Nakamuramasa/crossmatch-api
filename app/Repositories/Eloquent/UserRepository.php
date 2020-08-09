@@ -17,4 +17,9 @@ class UserRepository extends BaseRepository implements IUser
     {
         return $this->model->where('email', $email)->first();
     }
+
+    public function matchingUsers(array $matchingId)
+    {
+        return $this->model->whereIn('id', $matchingId)->get();
+    }
 }

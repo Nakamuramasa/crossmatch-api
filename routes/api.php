@@ -9,7 +9,9 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::get('user/{id}', 'User\UserController@findUser');
     Route::get('user/{username}', 'User\UserController@findByUsername');
 
-    Route::get('like', 'Reaction\ReactionController@index');
+    Route::get('matching', 'Match\MatchingController@findMatchUser');
+
+    // Route::get('like', 'Reaction\ReactionController@index');
     Route::post('like', 'Reaction\ReactionController@store');
     Route::put('like/{id}', 'Reaction\ReactionController@update');
     Route::delete('like/{id}', 'Reaction\ReactionController@destroy');
@@ -21,10 +23,10 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::put('chats/{id}/markAsRead', 'Chats\ChatController@markAsRead');
     Route::delete('messages/{id}', 'Chats\ChatController@destroyMessage');
 
-    Route::post('invitations/{chatId}', 'Chats\InvitationsController@invite');
-    Route::post('invitations/{id}/resend', 'Chats\InvitationsController@resend');
-    Route::post('invitations/{id}/respond', 'Chats\InvitationsController@respond');
-    Route::delete('invitations/{id}', 'Chats\InvitationsController@destroy');
+    // Route::post('invitations/{chatId}', 'Chats\InvitationsController@invite');
+    // Route::post('invitations/{id}/resend', 'Chats\InvitationsController@resend');
+    // Route::post('invitations/{id}/respond', 'Chats\InvitationsController@respond');
+    // Route::delete('invitations/{id}', 'Chats\InvitationsController@destroy');
 });
 
 Route::group(['middleware' => ['guest:api']], function(){

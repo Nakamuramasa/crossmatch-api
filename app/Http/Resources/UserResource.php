@@ -25,9 +25,6 @@ class UserResource extends JsonResource
             'about' => $this->about,
             'sex'=> $this->sex,
             'location' => $this->location,
-            'matching_user' => ReactionResource::collection(
-                $this->whenLoaded('fromUserId')
-            ),
             'formatted_address' => $this->formatted_address,
             'create_dates' => [
                 'created_at_human' => $this->created_at->diffForHumans(),

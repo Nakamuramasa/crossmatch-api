@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Reaction;
 
-use App\Models\Reaction;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ReactionResource;
@@ -23,10 +22,10 @@ class ReactionController extends Controller
 
     public function index()
     {
-        $reactions = $this->reactions->withCriteria([
-            new LatestFirst(),
-        ])->all();
-        return ReactionResource::collection($reactions);
+        // $reactions = $this->reactions->withCriteria([
+        //     new LatestFirst(),
+        // ])->all();
+        // return ReactionResource::collection($reactions);
     }
 
     public function store(Request $request)
@@ -66,7 +65,6 @@ class ReactionController extends Controller
             'from_user_id' => auth()->id(),
             'status' => $request->status
         ]);
-
         return new ReactionResource($reaction);
     }
 

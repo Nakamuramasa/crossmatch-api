@@ -17,4 +17,20 @@ class ReactionRepository extends BaseRepository implements IReaction
     {
         return $this->model->where($data)->get();
     }
+
+    public function gotReactionIds()
+    {
+        return $this->model->where([
+            ['to_user_id', auth()->id()],
+            ['status', 0]
+        ])->pluck('from_user_id')->all();
+    }
+
+    public function matchingIds(array $reactionId)
+    {
+        return $this->model->whereIn('to_user_id', $reactionId)
+            ->where('status', 0)
+            ->where('from_user_id', auth()->id())
+            ->pluck('to_user_id')->all();
+    }
 }
