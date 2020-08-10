@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
@@ -26,8 +25,8 @@ class UserController extends Controller
     {
         $users = $this->users->withCriteria([
             new LatestFirst(),
-            // new WithoutMe(),
-            new EagerLoad(['fromUserId'])
+            new WithoutMe(),
+            // new EagerLoad(['fromUserId'])
         ])->all();
         return UserResource::collection($users);
     }
@@ -40,7 +39,8 @@ class UserController extends Controller
 
     public function findByUsername($username)
     {
-        $user = User::findOrFail($username);
+        dd($username);exit;
+        $user = $this->users->findWhereFirst('username', $username);
         return new UserResource($user);
     }
 }
