@@ -41,6 +41,7 @@ class ChatController extends Controller
         $messages = $this->messages->withCriteria([
             new WithTrashed()
         ])->findWhere('chat_id', $chat->id);
+
         return MessageResource::collection($messages);
     }
 
@@ -51,8 +52,9 @@ class ChatController extends Controller
             'body' => ['required']
         ]);
 
+        $recipient = $request->recipient;
         $user = auth()->user();
-        $chat = $user->getChatWithUser($request->recipient);
+        $chat = $user->getChatWithUser($recipient);
 
         $message = $this->messages->create([
             'user_id' => auth()->id(),
