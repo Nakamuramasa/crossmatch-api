@@ -9,7 +9,8 @@ use App\Repositories\Contracts\IUser;
 use App\Repositories\Eloquent\Criteria\{
     LatestFirst,
     WithoutMe,
-    EagerLoad
+    EagerLoad,
+    ForUser
 };
 
 class UserController extends Controller
@@ -39,8 +40,15 @@ class UserController extends Controller
 
     public function findByUsername($username)
     {
-        dd($username);exit;
         $user = $this->users->findWhereFirst('username', $username);
+        return new UserResource($user);
+    }
+
+    public function userOwnsPage($id)
+    {
+        $user = $this->users->withCriteria(
+            [ new ForUser(auth()->id())]
+        )->findWhereFirst('id', $id);
         return new UserResource($user);
     }
 }

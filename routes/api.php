@@ -8,6 +8,7 @@ Route::group(['middleware' => ['auth:api']], function(){
     Route::get('users', 'User\UserController@index');
     Route::get('user/{id}', 'User\UserController@findUser');
     Route::get('user/{username}', 'User\UserController@findByUsername');
+    Route::get('users/{id}/byUser', 'User\UserController@userOwnsPage');
 
     Route::get('matching', 'Match\MatchingController@findMatchUser');
 
