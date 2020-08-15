@@ -25,11 +25,10 @@ class SettingsController extends Controller
         $this->validate($request, [
             'name' => ['required', 'string', 'max:255'],
             'user_img' => ['required', 'file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:6000'],
-            'sex' => ['required'],
             'about' => ['required', 'string', 'max:255'],
             'formatted_address' => ['required'],
-            'location.latitude' => ['required', 'numeric', 'min:-90', 'max:90'],
-            'location.longitude' => ['required', 'numeric', 'min:-180', 'max:180']
+            'location_latitude' => ['required', 'numeric', 'min:-90', 'max:90'],
+            'location_longitude' => ['required', 'numeric', 'min:-180', 'max:180']
         ]);
 
         $image = $request->user_img;
@@ -37,12 +36,11 @@ class SettingsController extends Controller
         $filename = time()."_".preg_replace('/\$+/', '_', strtolower($image->getClientOriginalName()));
         $tmp = $image->storeAs('uploads/original', $filename, 'tmp');
 
-        $location = new Point($request->location['latitude'], $request->location['longitude']);
+        $location = new Point($request->location_latitude, $request->location_longitude);
 
         $user = $this->users->update(auth()->id(), [
             'name' => $request->name,
             'user_img' => $filename,
-            'sex' => $request->sex,
             'about' => $request->about,
             'location' => $location,
             'formatted_address' => $request->formatted_address,
