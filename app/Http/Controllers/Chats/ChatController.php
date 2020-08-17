@@ -39,7 +39,7 @@ class ChatController extends Controller
         }
 
         $messages = $this->messages->withCriteria([
-            new WithTrashed()
+            // new WithTrashed()
         ])->findWhere('chat_id', $chat->id);
 
         return MessageResource::collection($messages);
